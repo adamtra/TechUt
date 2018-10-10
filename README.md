@@ -1,1 +1,1 @@
-# TechUt
+Adam Trawiński
