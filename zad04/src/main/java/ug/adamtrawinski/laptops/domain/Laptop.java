@@ -2,6 +2,7 @@ package ug.adamtrawinski.laptops.domain;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 public class Laptop {
@@ -11,10 +12,10 @@ public class Laptop {
     private Date releaseDate;
     private double price;
 
-    private Owner owner;
+    private List<Owner> owner;
     private Manufacturer manufacturer;
     private SerialCode serialCode;
-    private Processor processor;
+    private List<Processor> processor;
 
     @Override
     public String toString() {
@@ -97,11 +98,11 @@ public class Laptop {
 
 
     @ManyToMany
-    public Owner getOwner() {
+    public List<Owner> getOwner() {
         return owner;
     }
 
-    public void setOwner(Owner owner) {
+    public void setOwner(List<Owner> owner) {
         this.owner = owner;
     }
 
@@ -124,11 +125,11 @@ public class Laptop {
     }
 
     @OneToMany
-    public Processor getProcessor() {
+    public List<Processor> getProcessor() {
         return processor;
     }
 
-    public void setProcessor(Processor processor) {
+    public void setProcessor(List<Processor> processor) {
         this.processor = processor;
     }
 }
