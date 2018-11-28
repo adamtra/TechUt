@@ -12,6 +12,11 @@ public class Owner {
     private String firstName;
     private String lastName;
 
+    @Override
+    public String toString() {
+      return firstName + " " + lastName;
+    };
+
     public Owner() {
 
     }

@@ -10,6 +10,11 @@ public class SerialCode {
     private long id;
     private String code;
 
+    @Override
+    public String toString() {
+        return code;
+    }
+
     public SerialCode() {
 
     }

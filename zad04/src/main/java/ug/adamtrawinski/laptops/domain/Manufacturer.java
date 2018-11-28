@@ -11,6 +11,11 @@ public class Manufacturer {
     private String name;
     private int operateSince;
 
+    @Override
+    public String toString() {
+        return name + " " + operateSince;
+    }
+
     public Manufacturer() {
 
     }

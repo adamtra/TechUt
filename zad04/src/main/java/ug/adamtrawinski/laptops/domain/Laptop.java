@@ -20,20 +20,40 @@ public class Laptop {
     @Override
     public String toString() {
         String state;
+        String response = "";
         if(used) {
             state = "Użytany";
         }
         else {
             state = "Nowy";
         }
-        return "Laptop{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", used=" + state +
-                ", releaseDate=" + releaseDate +
-                ", price=" + price +
-                '}';
+
+        response += "Name: " + name + "\n";
+        response += "Used: " + state + "\n";
+        response += "Release Date: " + releaseDate + "\n";
+        response += "Price: " + price + "\n";
+
+        if(owner.size() > 0) {
+            response += "Owners: \n";
+            for (Owner o: owner) {
+                response += o + "\n";
+            }
+        }
+
+        response += "Manufacturer: " + manufacturer + "\n";
+        response += "Serial Code: " + serialCode + "\n";
+
+        if(processor.size() > 0) {
+            response += "Processors: \n";
+            for (Processor p: processor) {
+                response += p + "\n";
+            }
+        }
+
+        return response;
     }
+
+
 
     public Laptop(long id, String name, boolean used, Date releaseDate, double price) {
         this.id = id;
@@ -48,6 +68,17 @@ public class Laptop {
         this.used = used;
         this.releaseDate = releaseDate;
         this.price = price;
+    }
+
+    public Laptop(String name, boolean used, Date releaseDate, double price, List<Owner> owner, Manufacturer manufacturer, SerialCode serialCode, List<Processor> processor) {
+        this.name = name;
+        this.used = used;
+        this.releaseDate = releaseDate;
+        this.price = price;
+        this.owner = owner;
+        this.manufacturer = manufacturer;
+        this.serialCode = serialCode;
+        this.processor = processor;
     }
 
     public Laptop() {

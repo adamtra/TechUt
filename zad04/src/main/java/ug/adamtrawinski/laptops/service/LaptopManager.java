@@ -1,4 +1,11 @@
 package ug.adamtrawinski.laptops.service;
 
+import ug.adamtrawinski.laptops.domain.Laptop;
+
+import java.util.List;
+
 public interface LaptopManager {
+    boolean addLaptop(Laptop laptop);
+    Laptop findLaptopById(long id);
+    List<Laptop> getAllLaptops();
 }
