@@ -17,17 +17,18 @@ public class LaptopMangerHibernateImpl implements LaptopManager {
 
 
 	@Override
-	public boolean addLaptop(Laptop laptop) {
-		return false;
+	public void addLaptop(Laptop laptop) {
+		sessionFactory.getCurrentSession().persist(laptop);
 	}
 
 	@Override
 	public Laptop findLaptopById(long id) {
-		return null;
+		return (Laptop) sessionFactory.getCurrentSession().get(Laptop.class, id);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Laptop> getAllLaptops() {
-		return null;
+		return sessionFactory.getCurrentSession().createCriteria(Laptop.class).list();
 	}
 }
