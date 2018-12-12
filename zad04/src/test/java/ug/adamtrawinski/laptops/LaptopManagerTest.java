@@ -31,6 +31,7 @@ public class LaptopManagerTest {
 
     private final String NAME_1 = "Lenovo";
     private final String NAME_2 = "HP";
+    private final String NAME_3 = "Razer";
     private final boolean USED_1 = true;
     private final boolean USED_2 = false;
     private final Date RELEASE_DATE_1 = new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime();
@@ -65,6 +66,12 @@ public class LaptopManagerTest {
     public void getLaptopsCheck() {
         List<Laptop> laptops = lm.getAllLaptops();
         assertEquals(2, laptops.size());
+    }
+
+    @Test
+    public void updateLaptopCheck() {
+        Laptop laptop = new Laptop(2, NAME_3, USED_2, RELEASE_DATE_2, PRICE_2);
+        lm.updateLaptop(laptop);
     }
 
 //    @Test

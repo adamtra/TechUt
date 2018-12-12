@@ -39,7 +39,14 @@ public class LaptopMangerHibernateImpl implements LaptopManager {
 	}
 
 	@Override
+	public void updateLaptop(Laptop laptop) {
+		sessionFactory.getCurrentSession().persist(laptop);
+	}
+
+	@Override
 	public void clearTable() {
 		sessionFactory.getCurrentSession().createSQLQuery("TRUNCATE TABLE LAPTOP RESTART IDENTITY").executeUpdate();
 	}
+
+
 }

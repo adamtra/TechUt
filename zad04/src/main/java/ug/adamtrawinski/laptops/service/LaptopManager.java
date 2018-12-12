@@ -9,5 +9,6 @@ public interface LaptopManager {
     Laptop findLaptopById(long id);
     List<Laptop> getAllLaptops();
     void deleteLaptop(long id);
+    void updateLaptop(Laptop laptop);
     void clearTable();
 }
