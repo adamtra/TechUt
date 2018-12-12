@@ -31,4 +31,15 @@ public class LaptopMangerHibernateImpl implements LaptopManager {
 	public List<Laptop> getAllLaptops() {
 		return sessionFactory.getCurrentSession().createCriteria(Laptop.class).list();
 	}
+
+	@Override
+	public void deleteLaptop(long id) {
+		Laptop laptop = findLaptopById(id);
+		sessionFactory.getCurrentSession().delete(laptop);
+	}
+
+	@Override
+	public void clearTable() {
+		sessionFactory.getCurrentSession().createSQLQuery("TRUNCATE TABLE LAPTOP RESTART IDENTITY").executeUpdate();
+	}
 }

@@ -8,4 +8,6 @@ public interface LaptopManager {
     void addLaptop(Laptop laptop);
     Laptop findLaptopById(long id);
     List<Laptop> getAllLaptops();
+    void deleteLaptop(long id);
+    void clearTable();
 }
