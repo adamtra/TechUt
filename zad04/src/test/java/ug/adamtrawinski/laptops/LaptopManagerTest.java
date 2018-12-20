@@ -52,7 +52,7 @@ public class LaptopManagerTest {
 
     @After
     public void clean() {
-//        lm.clearTable();
+        lm.clearTable();
     }
 
     @Test
