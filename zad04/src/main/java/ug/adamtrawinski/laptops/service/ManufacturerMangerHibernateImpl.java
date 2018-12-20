@@ -48,7 +48,9 @@ public class ManufacturerMangerHibernateImpl implements ManufacturerManager {
 
 	@Override
 	public void clearTable() {
+		sessionFactory.getCurrentSession().createSQLQuery("SET DATABASE REFERENTIAL INTEGRITY FALSE").executeUpdate();
 		sessionFactory.getCurrentSession().createSQLQuery("TRUNCATE TABLE MANUFACTURER RESTART IDENTITY").executeUpdate();
+		sessionFactory.getCurrentSession().createSQLQuery("SET DATABASE REFERENTIAL INTEGRITY TRUE").executeUpdate();
 	}
 
 

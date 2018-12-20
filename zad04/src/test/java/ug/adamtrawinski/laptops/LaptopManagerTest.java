@@ -29,9 +29,9 @@ public class LaptopManagerTest {
     @Autowired
     LaptopManager lm;
 
-    private final String NAME_1 = "Lenovo";
-    private final String NAME_2 = "HP";
-    private final String NAME_3 = "Razer";
+    private final String NAME_1 = "YOGA 520";
+    private final String NAME_2 = "250 G6";
+    private final String NAME_3 = "Blade";
     private final boolean USED_1 = true;
     private final boolean USED_2 = false;
     private final Date RELEASE_DATE_1 = new GregorianCalendar(2018, Calendar.FEBRUARY, 11).getTime();
