@@ -40,7 +40,10 @@ public class LaptopMangerHibernateImpl implements LaptopManager {
 
 	@Override
 	public void updateLaptop(Laptop laptop) {
-		sessionFactory.getCurrentSession().persist(laptop);
+		Laptop old = findLaptopById(laptop.getId());
+		if(old != null) {
+			sessionFactory.getCurrentSession().merge(laptop);
+		}
 	}
 
 	@Override

@@ -40,7 +40,9 @@ public class LaptopManagerTest {
     private final double PRICE_2 = 976.00;
 
 
-    @Before public void prepare() {
+    @Before
+    public void prepare() {
+        lm.clearTable();
         Laptop lenovo = new Laptop(NAME_1, USED_1, RELEASE_DATE_1, PRICE_1);
         lm.addLaptop(lenovo);
 
@@ -48,8 +50,9 @@ public class LaptopManagerTest {
         lm.addLaptop(hp);
     }
 
-    @After public void clean() {
-        lm.clearTable();
+    @After
+    public void clean() {
+//        lm.clearTable();
     }
 
     @Test
@@ -72,12 +75,14 @@ public class LaptopManagerTest {
     public void updateLaptopCheck() {
         Laptop laptop = new Laptop(2, NAME_3, USED_2, RELEASE_DATE_2, PRICE_2);
         lm.updateLaptop(laptop);
+        Laptop retrieved = lm.findLaptopById(2);
+        assertEquals(NAME_3, retrieved.getName());
     }
 
-//    @Test
-//    public void deleteLaptop() {
-//        lm.deleteLaptop(1);
-//        Laptop retrieved = lm.findLaptopById(1);
-//        assertNull(retrieved);
-//    }
+    @Test
+    public void deleteLaptop() {
+        lm.deleteLaptop(1);
+        Laptop retrieved = lm.findLaptopById(1);
+        assertNull(retrieved);
+    }
 }
