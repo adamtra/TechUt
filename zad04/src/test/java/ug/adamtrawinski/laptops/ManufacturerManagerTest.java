@@ -35,7 +35,7 @@ public class ManufacturerManagerTest {
 
     @Before
     public void prepare() {
-//        mm.clearTable();
+        mm.clearTable();
         Manufacturer lenovo = new Manufacturer(NAME_1, OPERATE_SINCE);
         mm.addManufacturer(lenovo);
 
@@ -45,7 +45,7 @@ public class ManufacturerManagerTest {
 
     @After
     public void clean() {
-//        mm.clearTable();
+        mm.clearTable();
     }
 
     @Test

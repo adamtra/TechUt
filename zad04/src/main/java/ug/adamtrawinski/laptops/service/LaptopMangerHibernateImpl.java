@@ -36,6 +36,7 @@ public class LaptopMangerHibernateImpl implements LaptopManager {
 	public void deleteLaptop(long id) {
 		Laptop laptop = findLaptopById(id);
 		sessionFactory.getCurrentSession().delete(laptop);
+		sessionFactory.getCurrentSession().flush();
 	}
 
 	@Override
@@ -44,6 +45,7 @@ public class LaptopMangerHibernateImpl implements LaptopManager {
 		if(old != null) {
 			sessionFactory.getCurrentSession().merge(laptop);
 		}
+		sessionFactory.getCurrentSession().flush();
 	}
 
 	@Override
