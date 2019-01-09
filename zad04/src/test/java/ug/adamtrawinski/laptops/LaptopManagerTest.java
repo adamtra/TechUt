@@ -10,7 +10,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ug.adamtrawinski.laptops.domain.Laptop;
+import ug.adamtrawinski.laptops.domain.SerialCode;
 import ug.adamtrawinski.laptops.service.LaptopManager;
+import ug.adamtrawinski.laptops.service.SerialCodeManager;
 
 import java.util.Date;
 import java.util.Calendar;
@@ -28,6 +30,8 @@ public class LaptopManagerTest {
 
     @Autowired
     LaptopManager lm;
+    @Autowired
+    SerialCodeManager scm;
 
     private final String NAME_1 = "YOGA 520";
     private final String NAME_2 = "250 G6";
@@ -39,10 +43,13 @@ public class LaptopManagerTest {
     private final double PRICE_1 = 1500.23;
     private final double PRICE_2 = 976.00;
 
+    private final String SERIAL_CODE = "ZY89-2SDA";
+
 
     @Before
     public void prepare() {
         lm.clearTable();
+        scm.clearTable();
         Laptop lenovo = new Laptop(NAME_1, USED_1, RELEASE_DATE_1, PRICE_1);
         lm.addLaptop(lenovo);
 
@@ -53,6 +60,7 @@ public class LaptopManagerTest {
     @After
     public void clean() {
         lm.clearTable();
+        scm.clearTable();
     }
 
     @Test
@@ -84,5 +92,15 @@ public class LaptopManagerTest {
         lm.deleteLaptop(1);
         Laptop retrieved = lm.findLaptopById(1);
         assertNull(retrieved);
+    }
+
+    @Test
+    public void assignSerialCode() {
+        SerialCode serialCode = new SerialCode(SERIAL_CODE);
+        scm.addSerialCode(serialCode);
+        Laptop retrieved = lm.findLaptopById(2);
+        retrieved.setSerialCode(serialCode);
+        lm.updateLaptop(retrieved);
+        assertEquals(retrieved.getSerialCode().getId(), 1);
     }
 }
