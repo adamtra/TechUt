@@ -10,8 +10,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ug.adamtrawinski.laptops.domain.Laptop;
+import ug.adamtrawinski.laptops.domain.Manufacturer;
 import ug.adamtrawinski.laptops.domain.SerialCode;
 import ug.adamtrawinski.laptops.service.LaptopManager;
+import ug.adamtrawinski.laptops.service.ManufacturerManager;
 import ug.adamtrawinski.laptops.service.SerialCodeManager;
 
 import java.util.Date;
@@ -32,6 +34,8 @@ public class LaptopManagerTest {
     LaptopManager lm;
     @Autowired
     SerialCodeManager scm;
+    @Autowired
+    ManufacturerManager mm;
 
     private final String NAME_1 = "YOGA 520";
     private final String NAME_2 = "250 G6";
@@ -45,11 +49,15 @@ public class LaptopManagerTest {
 
     private final String SERIAL_CODE = "ZY89-2SDA";
 
+    private final String MANUFACTURER_NAME = "Lenovo";
+    private final int MANUFACTURER_OPERATE_SINCE = 1990;
+
 
     @Before
     public void prepare() {
         lm.clearTable();
         scm.clearTable();
+        mm.clearTable();
         Laptop lenovo = new Laptop(NAME_1, USED_1, RELEASE_DATE_1, PRICE_1);
         lm.addLaptop(lenovo);
 
@@ -61,6 +69,7 @@ public class LaptopManagerTest {
     public void clean() {
         lm.clearTable();
         scm.clearTable();
+        mm.clearTable();
     }
 
     @Test
@@ -101,6 +110,16 @@ public class LaptopManagerTest {
         Laptop retrieved = lm.findLaptopById(2);
         retrieved.setSerialCode(serialCode);
         lm.updateLaptop(retrieved);
-        assertEquals(retrieved.getSerialCode().getId(), 1);
+        assertEquals(retrieved.getSerialCode().getCode(), SERIAL_CODE);
+    }
+
+    @Test
+    public void assignManufacturer() {
+        Manufacturer manufacturer = new Manufacturer(MANUFACTURER_NAME, MANUFACTURER_OPERATE_SINCE);
+        mm.addManufacturer(manufacturer);
+        Laptop retrieved = lm.findLaptopById(1);
+        retrieved.setManufacturer(manufacturer);
+        lm.updateLaptop(retrieved);
+        assertEquals(retrieved.getManufacturer().getName(), MANUFACTURER_NAME);
     }
 }
