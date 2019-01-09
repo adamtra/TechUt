@@ -9,6 +9,6 @@ public interface ManufacturerManager {
     Manufacturer findManufacturerById(long id);
     List<Manufacturer> getAllManufacturers();
     void deleteManufacturer(long id);
-    void updateManufacturer(Manufacturer laptop);
+    void updateManufacturer(Manufacturer manufacturer);
     void clearTable();
 }
