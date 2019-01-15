@@ -16,10 +16,7 @@ import ug.adamtrawinski.laptops.service.LaptopManager;
 import ug.adamtrawinski.laptops.service.ManufacturerManager;
 import ug.adamtrawinski.laptops.service.SerialCodeManager;
 
-import java.util.Date;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -86,6 +83,45 @@ public class LaptopManagerTest {
     public void getLaptopsCheck() {
         List<Laptop> laptops = lm.getAllLaptops();
         assertEquals(2, laptops.size());
+    }
+
+    @Test
+    public void getLaptopsByName() {
+        List<Laptop> laptops = lm.findLaptopsByName(NAME_2);
+        assertEquals(1, laptops.size());
+        assertEquals(NAME_2, laptops.get(0).getName());
+    }
+
+
+    @Test
+    public void getLaptopsBetweenPrice() {
+        List<Laptop> laptops = lm.findLaptopsBetweenPrice(1000, 2000);
+        assertEquals(1, laptops.size());
+        assertEquals(NAME_1, laptops.get(0).getName());
+    }
+
+    @Test
+    public void getLaptopBySerialCode() {
+        SerialCode serialCode = new SerialCode(SERIAL_CODE);
+        scm.addSerialCode(serialCode);
+        Laptop retrieved = lm.findLaptopById(2);
+        retrieved.setSerialCode(serialCode);
+        lm.updateLaptop(retrieved);
+
+        Laptop laptop = lm.findLaptopBySerialCode(SERIAL_CODE);
+        assertEquals(SERIAL_CODE, laptop.getSerialCode().getCode());
+    }
+
+    @Test
+    public void getLaptopsByManufacturer() {
+        Manufacturer manufacturer = new Manufacturer(MANUFACTURER_NAME, MANUFACTURER_OPERATE_SINCE);
+        mm.addManufacturer(manufacturer);
+        Laptop retrieved = lm.findLaptopById(1);
+        retrieved.setManufacturer(manufacturer);
+        lm.updateLaptop(retrieved);
+
+        List<Laptop> laptops = lm.findLaptopsByManufacturer(1L);
+        assertEquals(1, laptops.size());
     }
 
     @Test

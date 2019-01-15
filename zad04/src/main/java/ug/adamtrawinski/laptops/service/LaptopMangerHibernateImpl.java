@@ -1,5 +1,6 @@
 package ug.adamtrawinski.laptops.service;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,42 @@ public class LaptopMangerHibernateImpl implements LaptopManager {
 	public Laptop findLaptopById(long id) {
 		return (Laptop) sessionFactory.getCurrentSession().get(Laptop.class, id);
 	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Laptop> findLaptopsByName(String name) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("laptop.findByName");
+		query.setParameter("name", name);
+		return query.list();
+	}
+
+
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Laptop> findLaptopsBetweenPrice(double min, double max) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("laptop.findPriceBetween");
+		query.setParameter("min", min);
+		query.setParameter("max", max);
+		return query.list();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Laptop findLaptopBySerialCode(String code) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("laptop.findBySerialCode");
+		query.setParameter("code", code);
+		return (Laptop) query.list().get(0);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Laptop> findLaptopsByManufacturer(Long manufacturer) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("laptop.findByManufacturer");
+		query.setParameter("manufacturer", manufacturer);
+		return query.list();
+	}
+
 
 	@Override
 	@SuppressWarnings("unchecked")
