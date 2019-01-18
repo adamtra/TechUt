@@ -21,6 +21,8 @@ public class LaptopServiceJDBC implements LaptopService {
     private final String SELECT_LAPTOP_BY_NAME = "SELECT id, name, used, releasedate, price FROM Laptop WHERE name = ?";
     private final String SELECT_LAPTOP_USED = "SELECT id, name, used, releasedate, price FROM Laptop WHERE used = true";
     private final String SELECT_LAPTOP_NEWER_THAN = "SELECT id, name, used, releasedate, price FROM Laptop WHERE releasedate > ?";
+    private final String SELECT_LAPTOP_PRICE_BETWEEN = "SELECT id, name, used, releasedate, price FROM Laptop WHERE price >= ? AND price <= ?";
+    private final String SELECT_LAPTOP_NAME_LIKE = "SELECT id, name, used, releasedate, price FROM Laptop WHERE LCASE(name) LIKE ?";
 
 
     PreparedStatement insertLaptopPStmt;
@@ -30,6 +32,8 @@ public class LaptopServiceJDBC implements LaptopService {
     PreparedStatement selectLaptopByNamePStmt;
     PreparedStatement selectLaptopUsedPStmt;
     PreparedStatement selectLaptopNewerThanPStmt;
+    PreparedStatement selectLaptopPriceBetweenPStmt;
+    PreparedStatement selectLaptopNameLikePStmt;
 
     private Statement statement;
 
@@ -57,6 +61,8 @@ public class LaptopServiceJDBC implements LaptopService {
         selectLaptopByNamePStmt = connection.prepareStatement(SELECT_LAPTOP_BY_NAME);
         selectLaptopUsedPStmt = connection.prepareStatement(SELECT_LAPTOP_USED);
         selectLaptopNewerThanPStmt = connection.prepareStatement(SELECT_LAPTOP_NEWER_THAN);
+        selectLaptopPriceBetweenPStmt = connection.prepareStatement(SELECT_LAPTOP_PRICE_BETWEEN);
+        selectLaptopNameLikePStmt = connection.prepareStatement(SELECT_LAPTOP_NAME_LIKE);
     }
 
     private int addLaptopLowLevel(Laptop laptop) throws SQLException {
@@ -201,6 +207,49 @@ public class LaptopServiceJDBC implements LaptopService {
         try {
             selectLaptopNewerThanPStmt.setDate(1, date);
             ResultSet rs = selectLaptopNewerThanPStmt.executeQuery();
+            while (rs.next()) {
+                Laptop laptop = new Laptop(rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getBoolean("used"),
+                        rs.getDate("releasedate"),
+                        rs.getDouble("price"));
+                result.add(laptop);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public List<Laptop> getLaptopsPriceBetween(double min, double max) {
+        List<Laptop> result = new ArrayList<>();
+        try {
+            selectLaptopPriceBetweenPStmt.setDouble(1, min);
+            selectLaptopPriceBetweenPStmt.setDouble(2, max);
+            ResultSet rs = selectLaptopNewerThanPStmt.executeQuery();
+            while (rs.next()) {
+                Laptop laptop = new Laptop(rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getBoolean("used"),
+                        rs.getDate("releasedate"),
+                        rs.getDouble("price"));
+                result.add(laptop);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public List<Laptop> getLaptopsNameLike(String name) {
+        List<Laptop> result = new ArrayList<>();
+        try {
+            selectLaptopNameLikePStmt.setString(1, "%" + name + "%");
+            ResultSet rs = selectLaptopNameLikePStmt.executeQuery();
             while (rs.next()) {
                 Laptop laptop = new Laptop(rs.getLong("id"),
                         rs.getString("name"),

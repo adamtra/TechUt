@@ -25,8 +25,8 @@ public class Run {
 
         List<Laptop> laptops = new ArrayList<>();
 
-        Laptop laptop3 = new Laptop("Lenovo v2", true, new Date((2017 - 1900), 10, 2), 250.00);
-        Laptop laptop4 = new Laptop("Lenovo", true, new Date((2015 - 1900), 2, 5), 328.31);
+        Laptop laptop3 = new Laptop("Acer", true, new Date((2017 - 1900), 10, 2), 250.00);
+        Laptop laptop4 = new Laptop("Dell", true, new Date((2015 - 1900), 2, 5), 1200.31);
 
         laptops.add(laptop3);
         laptops.add(laptop4);
@@ -39,6 +39,15 @@ public class Run {
         laptops2.add(laptop3);
         laptops2.add(laptop5);
         laptopService.addAllLaptops(laptops2);
+
+        Laptop laptop6 = new Laptop("Apple", true, new Date((2018 - 1900), 5, 6), 1300.99);
+        laptopService.addLaptop(laptop6);
+
+        List<Laptop> all = laptopService.getAllLaptops();
+        System.out.println("Wszystkie");
+        for(Laptop laptop: all) {
+            System.out.println(laptop);
+        }
 
 
         List<Laptop> used = laptopService.getUsedLaptops();
@@ -58,6 +67,17 @@ public class Run {
             System.out.println(laptop);
         }
 
+        List<Laptop> price = laptopService.getLaptopsPriceBetween(250, 330);
+        System.out.println("Cena pomiędzy 250 i 330");
+        for(Laptop laptop: price) {
+            System.out.println(laptop);
+        }
+
+        List<Laptop> like = laptopService.getLaptopsNameLike("le");
+        System.out.println("Nazwa zawiera frazę 'le'");
+        for(Laptop laptop: like) {
+            System.out.println(laptop);
+        }
 
     }
 }

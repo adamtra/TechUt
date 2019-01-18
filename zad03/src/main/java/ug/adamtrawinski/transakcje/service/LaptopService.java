@@ -15,5 +15,7 @@ public interface LaptopService {
     List<Laptop> getAllLaptops();
     List<Laptop> getUsedLaptops();
     List<Laptop> getLaptopsNewerThan(Date date);
+    List<Laptop> getLaptopsPriceBetween(double min, double max);
+    List<Laptop> getLaptopsNameLike(String name);
     boolean addAllLaptops(List<Laptop> laptops);
 }
