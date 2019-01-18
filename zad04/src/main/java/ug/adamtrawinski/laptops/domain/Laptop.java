@@ -7,6 +7,7 @@ import java.util.List;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "laptop.findByName", query = "SELECT l FROM Laptop l WHERE l.name = :name"),
+        @NamedQuery(name = "laptop.findNewerThan", query = "SELECT l FROM Laptop l WHERE l.releaseDate >= :releaseDate"),
         @NamedQuery(name = "laptop.findPriceBetween", query = "SELECT l FROM Laptop l WHERE l.price >= :min AND l.price <= :max"),
         @NamedQuery(name = "laptop.findBySerialCode", query = "SELECT l FROM Laptop l JOIN l.serialCode sc WHERE sc.code = :code"),
         @NamedQuery(name = "laptop.findByManufacturer", query = "SELECT l FROM Laptop l JOIN l.manufacturer m WHERE m.id = :manufacturer")

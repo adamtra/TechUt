@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ug.adamtrawinski.laptops.domain.Laptop;
 
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -35,6 +36,13 @@ public class LaptopMangerHibernateImpl implements LaptopManager {
 		return query.list();
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Laptop> findLaptopsNewerThan(Date releaseDate) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("laptop.findNewerThan");
+		query.setParameter("releaseDate", releaseDate);
+		return query.list();
+	}
 
 
 	@Override

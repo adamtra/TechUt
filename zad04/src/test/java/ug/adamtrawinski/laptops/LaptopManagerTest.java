@@ -11,10 +11,9 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ug.adamtrawinski.laptops.domain.Laptop;
 import ug.adamtrawinski.laptops.domain.Manufacturer;
+import ug.adamtrawinski.laptops.domain.Processor;
 import ug.adamtrawinski.laptops.domain.SerialCode;
-import ug.adamtrawinski.laptops.service.LaptopManager;
-import ug.adamtrawinski.laptops.service.ManufacturerManager;
-import ug.adamtrawinski.laptops.service.SerialCodeManager;
+import ug.adamtrawinski.laptops.service.*;
 
 import java.util.*;
 
@@ -33,6 +32,10 @@ public class LaptopManagerTest {
     SerialCodeManager scm;
     @Autowired
     ManufacturerManager mm;
+    @Autowired
+    OwnerManager om;
+    @Autowired
+    ProcessorManager pm;
 
     private final String NAME_1 = "YOGA 520";
     private final String NAME_2 = "250 G6";
@@ -44,10 +47,13 @@ public class LaptopManagerTest {
     private final double PRICE_1 = 1500.23;
     private final double PRICE_2 = 976.00;
 
-    private final String SERIAL_CODE = "ZY89-2SDA";
+    private final String SERIAL_CODE_1 = "ZY89-2SDA";
 
-    private final String MANUFACTURER_NAME = "Lenovo";
-    private final int MANUFACTURER_OPERATE_SINCE = 1990;
+    private final String MANUFACTURER_NAME_1 = "Lenovo";
+    private final int MANUFACTURER_OPERATE_SINCE_1 = 1990;
+
+    private final String PROCESSOR_NAME_1 = "i5 4690k";
+    private final String PROCESSOR_NAME_2 = "i7 7700";
 
 
     @Before
@@ -55,11 +61,29 @@ public class LaptopManagerTest {
         lm.clearTable();
         scm.clearTable();
         mm.clearTable();
+
         Laptop lenovo = new Laptop(NAME_1, USED_1, RELEASE_DATE_1, PRICE_1);
         lm.addLaptop(lenovo);
-
         Laptop hp = new Laptop(NAME_2, USED_2, RELEASE_DATE_2, PRICE_2);
         lm.addLaptop(hp);
+
+        SerialCode serialCode = new SerialCode(SERIAL_CODE_1);
+        scm.addSerialCode(serialCode);
+        Laptop laptop1 = lm.findLaptopById(2);
+        laptop1.setSerialCode(serialCode);
+        lm.updateLaptop(laptop1);
+
+
+        Manufacturer manufacturer = new Manufacturer(MANUFACTURER_NAME_1, MANUFACTURER_OPERATE_SINCE_1);
+        mm.addManufacturer(manufacturer);
+        Laptop laptop2 = lm.findLaptopById(1);
+        laptop2.setManufacturer(manufacturer);
+        lm.updateLaptop(laptop2);
+
+        Processor processor1 = new Processor(PROCESSOR_NAME_1);
+        pm.addProcessor(processor1);
+        Processor processor2 = new Processor(PROCESSOR_NAME_2);
+        pm.addProcessor(processor2);
     }
 
     @After
@@ -102,24 +126,12 @@ public class LaptopManagerTest {
 
     @Test
     public void getLaptopBySerialCode() {
-        SerialCode serialCode = new SerialCode(SERIAL_CODE);
-        scm.addSerialCode(serialCode);
-        Laptop retrieved = lm.findLaptopById(2);
-        retrieved.setSerialCode(serialCode);
-        lm.updateLaptop(retrieved);
-
-        Laptop laptop = lm.findLaptopBySerialCode(SERIAL_CODE);
-        assertEquals(SERIAL_CODE, laptop.getSerialCode().getCode());
+        Laptop laptop = lm.findLaptopBySerialCode(SERIAL_CODE_1);
+        assertEquals(SERIAL_CODE_1, laptop.getSerialCode().getCode());
     }
 
     @Test
     public void getLaptopsByManufacturer() {
-        Manufacturer manufacturer = new Manufacturer(MANUFACTURER_NAME, MANUFACTURER_OPERATE_SINCE);
-        mm.addManufacturer(manufacturer);
-        Laptop retrieved = lm.findLaptopById(1);
-        retrieved.setManufacturer(manufacturer);
-        lm.updateLaptop(retrieved);
-
         List<Laptop> laptops = lm.findLaptopsByManufacturer(1L);
         assertEquals(1, laptops.size());
     }
@@ -141,21 +153,13 @@ public class LaptopManagerTest {
 
     @Test
     public void assignSerialCode() {
-        SerialCode serialCode = new SerialCode(SERIAL_CODE);
-        scm.addSerialCode(serialCode);
         Laptop retrieved = lm.findLaptopById(2);
-        retrieved.setSerialCode(serialCode);
-        lm.updateLaptop(retrieved);
-        assertEquals(retrieved.getSerialCode().getCode(), SERIAL_CODE);
+        assertEquals(retrieved.getSerialCode().getCode(), SERIAL_CODE_1);
     }
 
     @Test
     public void assignManufacturer() {
-        Manufacturer manufacturer = new Manufacturer(MANUFACTURER_NAME, MANUFACTURER_OPERATE_SINCE);
-        mm.addManufacturer(manufacturer);
         Laptop retrieved = lm.findLaptopById(1);
-        retrieved.setManufacturer(manufacturer);
-        lm.updateLaptop(retrieved);
-        assertEquals(retrieved.getManufacturer().getName(), MANUFACTURER_NAME);
+        assertEquals(retrieved.getManufacturer().getName(), MANUFACTURER_NAME_1);
     }
 }
