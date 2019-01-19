@@ -99,15 +99,21 @@ public class LaptopManagerTest {
         om.addOwner(owner2);
 
 
-        Laptop laptop1 = lm.findLaptopById(2);
-        laptop1.setSerialCode(serialCode1);
-        laptop1.getSales().add(sale1);
-        laptop1.getSales().add(sale2);
-        laptop1.setManufacturer(manufacturer2);
+        Laptop laptop1 = lm.findLaptopById(1);
+        laptop1.setManufacturer(manufacturer1);
+        laptop1.setSerialCode(serialCode2);
+        laptop1.getOwners().add(owner2);
         lm.updateLaptop(laptop1);
-        Laptop laptop2 = lm.findLaptopById(1);
-        laptop2.setManufacturer(manufacturer1);
-        laptop2.setSerialCode(serialCode2);
+
+
+
+        Laptop laptop2 = lm.findLaptopById(2);
+        laptop2.setSerialCode(serialCode1);
+        laptop2.getSales().add(sale1);
+        laptop2.getSales().add(sale2);
+        laptop2.setManufacturer(manufacturer2);
+        laptop2.getOwners().add(owner1);
+        laptop2.getOwners().add(owner2);
         lm.updateLaptop(laptop2);
 
     }
@@ -181,19 +187,33 @@ public class LaptopManagerTest {
 
     @Test
     public void assignSerialCode() {
-        Laptop retrieved = lm.findLaptopById(2);
-        assertEquals(SERIAL_CODE_1, retrieved.getSerialCode().getCode());
+        Laptop retrieved1 = lm.findLaptopById(1);
+        Laptop retrieved2 = lm.findLaptopById(2);
+        assertEquals(SERIAL_CODE_2, retrieved1.getSerialCode().getCode());
+        assertEquals(SERIAL_CODE_1, retrieved2.getSerialCode().getCode());
     }
 
     @Test
     public void assignManufacturer() {
-        Laptop retrieved = lm.findLaptopById(1);
-        assertEquals(MANUFACTURER_NAME_1, retrieved.getManufacturer().getName());
+        Laptop retrieved1 = lm.findLaptopById(1);
+        Laptop retrieved2 = lm.findLaptopById(2);
+        assertEquals(MANUFACTURER_NAME_1, retrieved1.getManufacturer().getName());
+        assertEquals(MANUFACTURER_NAME_2, retrieved2.getManufacturer().getName());
     }
 
     @Test
     public void assignSales() {
-        Laptop retrieved = lm.findLaptopById(2);
-        assertEquals(2, retrieved.getSales().size());
+        Laptop retrieved1 = lm.findLaptopById(1);
+        Laptop retrieved2 = lm.findLaptopById(2);
+        assertEquals(0, retrieved1.getSales().size());
+        assertEquals(2, retrieved2.getSales().size());
+    }
+
+    @Test
+    public void assignOwners() {
+        Laptop retrieved1 = lm.findLaptopById(1);
+        Laptop retrieved2 = lm.findLaptopById(2);
+        assertEquals(1, retrieved1.getOwners().size());
+        assertEquals(2, retrieved2.getOwners().size());
     }
 }
