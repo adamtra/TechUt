@@ -95,6 +95,8 @@ public class LaptopMangerHibernateImpl implements LaptopManager {
 
 	@Override
 	public void clearTable() {
+		sessionFactory.getCurrentSession().createSQLQuery("TRUNCATE TABLE LAPTOP_PROCESSOR").executeUpdate();
+		sessionFactory.getCurrentSession().createSQLQuery("TRUNCATE TABLE LAPTOP_OWNER").executeUpdate();
 		sessionFactory.getCurrentSession().createSQLQuery("TRUNCATE TABLE LAPTOP RESTART IDENTITY").executeUpdate();
 	}
 

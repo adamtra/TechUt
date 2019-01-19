@@ -50,6 +50,7 @@ public class OwnerMangerHibernateImpl implements OwnerManager {
 
 	@Override
 	public void clearTable() {
+		sessionFactory.getCurrentSession().createSQLQuery("TRUNCATE TABLE LAPTOP_OWNER").executeUpdate();
 		sessionFactory.getCurrentSession().createSQLQuery("TRUNCATE TABLE OWNER RESTART IDENTITY").executeUpdate();
 	}
 

@@ -50,6 +50,7 @@ public class ProcessorMangerHibernateImpl implements ProcessorManager {
 
 	@Override
 	public void clearTable() {
+		sessionFactory.getCurrentSession().createSQLQuery("TRUNCATE TABLE LAPTOP_PROCESSOR").executeUpdate();
 		sessionFactory.getCurrentSession().createSQLQuery("TRUNCATE TABLE PROCESSOR RESTART IDENTITY").executeUpdate();
 	}
 

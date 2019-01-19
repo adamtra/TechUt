@@ -9,10 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import ug.adamtrawinski.laptops.domain.Laptop;
-import ug.adamtrawinski.laptops.domain.Manufacturer;
-import ug.adamtrawinski.laptops.domain.Processor;
-import ug.adamtrawinski.laptops.domain.SerialCode;
+import ug.adamtrawinski.laptops.domain.*;
 import ug.adamtrawinski.laptops.service.*;
 
 import java.util.*;
@@ -47,13 +44,21 @@ public class LaptopManagerTest {
     private final double PRICE_1 = 1500.23;
     private final double PRICE_2 = 976.00;
 
-    private final String SERIAL_CODE_1 = "ZY89-2SDA";
+    private final String SERIAL_CODE_1 = "QMH-34A";
+    private final String SERIAL_CODE_2 = "MKY-WM9";
 
     private final String MANUFACTURER_NAME_1 = "Lenovo";
+    private final String MANUFACTURER_NAME_2 = "HP";
     private final int MANUFACTURER_OPERATE_SINCE_1 = 1990;
+    private final int MANUFACTURER_OPERATE_SINCE_2 = 2010;
 
     private final String PROCESSOR_NAME_1 = "i5 4690k";
     private final String PROCESSOR_NAME_2 = "i7 7700";
+
+    private final String OWNER_FIRST_NAME_1 = "Jan";
+    private final String OWNER_LAST_NAME_1 = "Kowalski";
+    private final String OWNER_FIRST_NAME_2 = "Piotr";
+    private final String OWNER_LAST_NAME_2 = "Malinowski";
 
 
     @Before
@@ -61,29 +66,43 @@ public class LaptopManagerTest {
         lm.clearTable();
         scm.clearTable();
         mm.clearTable();
+        om.clearTable();
+        pm.clearTable();
 
         Laptop lenovo = new Laptop(NAME_1, USED_1, RELEASE_DATE_1, PRICE_1);
         lm.addLaptop(lenovo);
         Laptop hp = new Laptop(NAME_2, USED_2, RELEASE_DATE_2, PRICE_2);
         lm.addLaptop(hp);
 
-        SerialCode serialCode = new SerialCode(SERIAL_CODE_1);
-        scm.addSerialCode(serialCode);
-        Laptop laptop1 = lm.findLaptopById(2);
-        laptop1.setSerialCode(serialCode);
-        lm.updateLaptop(laptop1);
+        SerialCode serialCode1 = new SerialCode(SERIAL_CODE_1);
+        scm.addSerialCode(serialCode1);
+        SerialCode serialCode2 = new SerialCode(SERIAL_CODE_2);
+        scm.addSerialCode(serialCode2);
 
 
-        Manufacturer manufacturer = new Manufacturer(MANUFACTURER_NAME_1, MANUFACTURER_OPERATE_SINCE_1);
-        mm.addManufacturer(manufacturer);
-        Laptop laptop2 = lm.findLaptopById(1);
-        laptop2.setManufacturer(manufacturer);
-        lm.updateLaptop(laptop2);
+        Manufacturer manufacturer1 = new Manufacturer(MANUFACTURER_NAME_1, MANUFACTURER_OPERATE_SINCE_1);
+        mm.addManufacturer(manufacturer1);
+        Manufacturer manufacturer2 = new Manufacturer(MANUFACTURER_NAME_2, MANUFACTURER_OPERATE_SINCE_2);
+        mm.addManufacturer(manufacturer2);
+
 
         Processor processor1 = new Processor(PROCESSOR_NAME_1);
         pm.addProcessor(processor1);
         Processor processor2 = new Processor(PROCESSOR_NAME_2);
         pm.addProcessor(processor2);
+
+        Owner owner1 = new Owner(OWNER_FIRST_NAME_1, OWNER_LAST_NAME_1);
+        om.addOwner(owner1);
+        Owner owner2 = new Owner(OWNER_FIRST_NAME_2, OWNER_LAST_NAME_2);
+        om.addOwner(owner2);
+
+
+        Laptop laptop1 = lm.findLaptopById(2);
+        laptop1.setSerialCode(serialCode1);
+        lm.updateLaptop(laptop1);
+        Laptop laptop2 = lm.findLaptopById(1);
+        laptop2.setManufacturer(manufacturer1);
+        lm.updateLaptop(laptop2);
     }
 
     @After
@@ -91,6 +110,8 @@ public class LaptopManagerTest {
         lm.clearTable();
         scm.clearTable();
         mm.clearTable();
+        om.clearTable();
+        pm.clearTable();
     }
 
     @Test
