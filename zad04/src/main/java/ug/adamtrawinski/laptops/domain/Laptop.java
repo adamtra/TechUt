@@ -1,6 +1,7 @@
 package ug.adamtrawinski.laptops.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,10 +20,10 @@ public class Laptop {
     private Date releaseDate;
     private double price;
 
-    private List<Owner> owner;
+    private List<Owner> owners = new ArrayList<Owner>();
     private Manufacturer manufacturer;
     private SerialCode serialCode;
-    private List<Processor> processor;
+    private List<Sale> sales = new ArrayList<Sale>();
 
     @Override
     public String toString() {
@@ -40,9 +41,9 @@ public class Laptop {
         response += "Release Date: " + releaseDate + "\n";
         response += "Price: " + price + "\n";
 
-        if(owner.size() > 0) {
+        if(owners.size() > 0) {
             response += "Owners: \n";
-            for (Owner o: owner) {
+            for (Owner o: owners) {
                 response += o + "\n";
             }
         }
@@ -50,9 +51,9 @@ public class Laptop {
         response += "Manufacturer: " + manufacturer + "\n";
         response += "Serial Code: " + serialCode + "\n";
 
-        if(processor.size() > 0) {
+        if(sales.size() > 0) {
             response += "Processors: \n";
-            for (Processor p: processor) {
+            for (Sale p: sales) {
                 response += p + "\n";
             }
         }
@@ -77,15 +78,15 @@ public class Laptop {
         this.price = price;
     }
 
-    public Laptop(String name, boolean used, Date releaseDate, double price, List<Owner> owner, Manufacturer manufacturer, SerialCode serialCode, List<Processor> processor) {
+    public Laptop(String name, boolean used, Date releaseDate, double price, List<Owner> owners, Manufacturer manufacturer, SerialCode serialCode, List<Sale> sales) {
         this.name = name;
         this.used = used;
         this.releaseDate = releaseDate;
         this.price = price;
-        this.owner = owner;
+        this.owners = owners;
         this.manufacturer = manufacturer;
         this.serialCode = serialCode;
-        this.processor = processor;
+        this.sales = sales;
     }
 
     public Laptop() {
@@ -136,12 +137,12 @@ public class Laptop {
 
 
     @ManyToMany
-    public List<Owner> getOwner() {
-        return owner;
+    public List<Owner> getOwners() {
+        return owners;
     }
 
-    public void setOwner(List<Owner> owner) {
-        this.owner = owner;
+    public void setOwners(List<Owner> owners) {
+        this.owners = owners;
     }
 
     @ManyToOne
@@ -163,11 +164,11 @@ public class Laptop {
     }
 
     @OneToMany
-    public List<Processor> getProcessor() {
-        return processor;
+    public List<Sale> getSales() {
+        return sales;
     }
 
-    public void setProcessor(List<Processor> processor) {
-        this.processor = processor;
+    public void setSales(List<Sale> sales) {
+        this.sales = sales;
     }
 }

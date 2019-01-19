@@ -32,7 +32,7 @@ public class LaptopManagerTest {
     @Autowired
     OwnerManager om;
     @Autowired
-    ProcessorManager pm;
+    SalesManager sm;
 
     private final String NAME_1 = "YOGA 520";
     private final String NAME_2 = "250 G6";
@@ -52,8 +52,10 @@ public class LaptopManagerTest {
     private final int MANUFACTURER_OPERATE_SINCE_1 = 1990;
     private final int MANUFACTURER_OPERATE_SINCE_2 = 2010;
 
-    private final String PROCESSOR_NAME_1 = "i5 4690k";
-    private final String PROCESSOR_NAME_2 = "i7 7700";
+    private final String SALE_DESCRIPTION_1 = "Duża sprzedaż tego towaru";
+    private final int SALE_SOLD_1 = 5;
+    private final String SALE_DESCRIPTION_2 = "Jakiś klient";
+    private final int SALE_SOLD_2 = 1;
 
     private final String OWNER_FIRST_NAME_1 = "Jan";
     private final String OWNER_LAST_NAME_1 = "Kowalski";
@@ -67,7 +69,7 @@ public class LaptopManagerTest {
         scm.clearTable();
         mm.clearTable();
         om.clearTable();
-        pm.clearTable();
+        sm.clearTable();
 
         Laptop lenovo = new Laptop(NAME_1, USED_1, RELEASE_DATE_1, PRICE_1);
         lm.addLaptop(lenovo);
@@ -86,10 +88,10 @@ public class LaptopManagerTest {
         mm.addManufacturer(manufacturer2);
 
 
-        Processor processor1 = new Processor(PROCESSOR_NAME_1);
-        pm.addProcessor(processor1);
-        Processor processor2 = new Processor(PROCESSOR_NAME_2);
-        pm.addProcessor(processor2);
+        Sale sale1 = new Sale(SALE_DESCRIPTION_1, SALE_SOLD_1);
+        sm.addSale(sale1);
+        Sale sale2 = new Sale(SALE_DESCRIPTION_2, SALE_SOLD_2);
+        sm.addSale(sale2);
 
         Owner owner1 = new Owner(OWNER_FIRST_NAME_1, OWNER_LAST_NAME_1);
         om.addOwner(owner1);
@@ -99,10 +101,15 @@ public class LaptopManagerTest {
 
         Laptop laptop1 = lm.findLaptopById(2);
         laptop1.setSerialCode(serialCode1);
+        laptop1.getSales().add(sale1);
+        laptop1.getSales().add(sale2);
+        laptop1.setManufacturer(manufacturer2);
         lm.updateLaptop(laptop1);
         Laptop laptop2 = lm.findLaptopById(1);
         laptop2.setManufacturer(manufacturer1);
+        laptop2.setSerialCode(serialCode2);
         lm.updateLaptop(laptop2);
+
     }
 
     @After
@@ -111,7 +118,7 @@ public class LaptopManagerTest {
         scm.clearTable();
         mm.clearTable();
         om.clearTable();
-        pm.clearTable();
+        sm.clearTable();
     }
 
     @Test
@@ -175,12 +182,18 @@ public class LaptopManagerTest {
     @Test
     public void assignSerialCode() {
         Laptop retrieved = lm.findLaptopById(2);
-        assertEquals(retrieved.getSerialCode().getCode(), SERIAL_CODE_1);
+        assertEquals(SERIAL_CODE_1, retrieved.getSerialCode().getCode());
     }
 
     @Test
     public void assignManufacturer() {
         Laptop retrieved = lm.findLaptopById(1);
-        assertEquals(retrieved.getManufacturer().getName(), MANUFACTURER_NAME_1);
+        assertEquals(MANUFACTURER_NAME_1, retrieved.getManufacturer().getName());
+    }
+
+    @Test
+    public void assignSales() {
+        Laptop retrieved = lm.findLaptopById(2);
+        assertEquals(2, retrieved.getSales().size());
     }
 }
