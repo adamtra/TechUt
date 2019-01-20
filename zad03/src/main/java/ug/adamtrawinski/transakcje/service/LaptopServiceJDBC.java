@@ -22,7 +22,7 @@ public class LaptopServiceJDBC implements LaptopService {
     private final String SELECT_LAPTOP_USED = "SELECT id, name, used, releasedate, price FROM Laptop WHERE used = true";
     private final String SELECT_LAPTOP_NEWER_THAN = "SELECT id, name, used, releasedate, price FROM Laptop WHERE releasedate > ?";
     private final String SELECT_LAPTOP_PRICE_BETWEEN = "SELECT id, name, used, releasedate, price FROM Laptop WHERE price >= ? AND price <= ?";
-    private final String SELECT_LAPTOP_NAME_LIKE = "SELECT id, name, used, releasedate, price FROM Laptop WHERE LCASE(name) LIKE ?";
+    private final String SELECT_LAPTOP_NAME_LIKE = "SELECT id, name, used, releasedate, price FROM Laptop WHERE LCASE(name) LIKE LCASE(CONCAT('%', ?, '%'))";
 
 
     PreparedStatement insertLaptopPStmt;
@@ -248,7 +248,7 @@ public class LaptopServiceJDBC implements LaptopService {
     public List<Laptop> getLaptopsNameLike(String name) {
         List<Laptop> result = new ArrayList<>();
         try {
-            selectLaptopNameLikePStmt.setString(1, "%" + name + "%");
+            selectLaptopNameLikePStmt.setString(1, name);
             ResultSet rs = selectLaptopNameLikePStmt.executeQuery();
             while (rs.next()) {
                 Laptop laptop = new Laptop(rs.getLong("id"),

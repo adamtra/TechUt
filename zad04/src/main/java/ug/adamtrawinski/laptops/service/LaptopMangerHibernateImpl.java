@@ -38,6 +38,14 @@ public class LaptopMangerHibernateImpl implements LaptopManager {
 
 	@Override
 	@SuppressWarnings("unchecked")
+	public List<Laptop> findLaptopsNameLike(String name) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("laptop.findByNameLike");
+		query.setParameter("name", name);
+		return query.list();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
 	public List<Laptop> findLaptopsNewerThan(Date releaseDate) {
 		Query query = sessionFactory.getCurrentSession().getNamedQuery("laptop.findNewerThan");
 		query.setParameter("releaseDate", releaseDate);

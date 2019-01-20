@@ -34,7 +34,7 @@ public class LaptopManagerTest {
     @Autowired
     SalesManager sm;
 
-    private final String NAME_1 = "YOGA 520";
+    private final String NAME_1 = "YOGA 525";
     private final String NAME_2 = "250 G6";
     private final String NAME_3 = "Blade";
     private final boolean USED_1 = true;
@@ -150,10 +150,25 @@ public class LaptopManagerTest {
         assertEquals(NAME_2, laptops.get(0).getName());
     }
 
+    @Test
+    public void getLaptopsNameLike() {
+        List<Laptop> laptops = lm.findLaptopsNameLike("25");
+        assertEquals(2, laptops.size());
+        assertEquals(NAME_1, laptops.get(0).getName());
+        assertEquals(NAME_2, laptops.get(1).getName());
+    }
+
 
     @Test
     public void getLaptopsBetweenPrice() {
         List<Laptop> laptops = lm.findLaptopsBetweenPrice(1000, 2000);
+        assertEquals(1, laptops.size());
+        assertEquals(NAME_1, laptops.get(0).getName());
+    }
+
+    @Test
+    public void getLaptopsNewerThan() {
+        List<Laptop> laptops = lm.findLaptopsNewerThan(new GregorianCalendar(2017, Calendar.APRIL, 25).getTime());
         assertEquals(1, laptops.size());
         assertEquals(NAME_1, laptops.get(0).getName());
     }

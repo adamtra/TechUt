@@ -9,6 +9,7 @@ public interface LaptopManager {
     void addLaptop(Laptop laptop);
     Laptop findLaptopById(long id);
     List<Laptop> findLaptopsByName(String name);
+    List<Laptop> findLaptopsNameLike(String name);
     List<Laptop> findLaptopsNewerThan(Date releaseDate);
     List<Laptop> findLaptopsBetweenPrice(double min, double max);
     Laptop findLaptopBySerialCode(String code);

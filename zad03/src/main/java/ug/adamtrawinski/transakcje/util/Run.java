@@ -73,8 +73,8 @@ public class Run {
             System.out.println(laptop);
         }
 
-        List<Laptop> like = laptopService.getLaptopsNameLike("le");
-        System.out.println("Nazwa zawiera frazę 'le'");
+        List<Laptop> like = laptopService.getLaptopsNameLike("lE");
+        System.out.println("Nazwa zawiera frazę 'lE'");
         for(Laptop laptop: like) {
             System.out.println(laptop);
         }
