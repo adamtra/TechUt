@@ -14,6 +14,7 @@ public interface LaptopManager {
     List<Laptop> findLaptopsBetweenPrice(double min, double max);
     Laptop findLaptopBySerialCode(String code);
     List<Laptop> findLaptopsByManufacturer(Long manufacturer);
+    List<Laptop> findLaptopsSoldMoreThan(int sold);
     List<Laptop> getAllLaptops();
     void deleteLaptop(long id);
     void updateLaptop(Laptop laptop);

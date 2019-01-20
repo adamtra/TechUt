@@ -78,6 +78,13 @@ public class LaptopMangerHibernateImpl implements LaptopManager {
 		return query.list();
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Laptop> findLaptopsSoldMoreThan(int sold) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("laptop.findWhereSaleBiggerThan");
+		query.setParameter("sold", (long) sold);
+		return query.list();
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")

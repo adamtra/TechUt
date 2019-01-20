@@ -53,9 +53,11 @@ public class LaptopManagerTest {
     private final int MANUFACTURER_OPERATE_SINCE_2 = 2010;
 
     private final String SALE_DESCRIPTION_1 = "Duża sprzedaż tego towaru";
-    private final int SALE_SOLD_1 = 5;
+    private final int SALE_SOLD_1 = 2;
     private final String SALE_DESCRIPTION_2 = "Jakiś klient";
     private final int SALE_SOLD_2 = 1;
+    private final String SALE_DESCRIPTION_3 = "Istotna sprzedaż";
+    private final int SALE_SOLD_3 = 2;
 
     private final String OWNER_FIRST_NAME_1 = "Jan";
     private final String OWNER_LAST_NAME_1 = "Kowalski";
@@ -92,6 +94,8 @@ public class LaptopManagerTest {
         sm.addSale(sale1);
         Sale sale2 = new Sale(SALE_DESCRIPTION_2, SALE_SOLD_2);
         sm.addSale(sale2);
+        Sale sale3 = new Sale(SALE_DESCRIPTION_3, SALE_SOLD_3);
+        sm.addSale(sale3);
 
         Owner owner1 = new Owner(OWNER_FIRST_NAME_1, OWNER_LAST_NAME_1);
         om.addOwner(owner1);
@@ -103,6 +107,7 @@ public class LaptopManagerTest {
         laptop1.setManufacturer(manufacturer1);
         laptop1.setSerialCode(serialCode2);
         laptop1.getOwners().add(owner2);
+        laptop1.getSales().add(sale3);
         lm.updateLaptop(laptop1);
 
 
@@ -186,6 +191,13 @@ public class LaptopManagerTest {
     }
 
     @Test
+    public void getLaptopsSoldMoreThan() {
+        List<Laptop> laptops = lm.findLaptopsSoldMoreThan(3);
+        assertEquals(1, laptops.size());
+        assertEquals(NAME_2, laptops.get(0).getName());
+    }
+
+    @Test
     public void updateLaptopCheck() {
         Laptop laptop = new Laptop(2, NAME_3, USED_2, RELEASE_DATE_2, PRICE_2);
         lm.updateLaptop(laptop);
@@ -220,7 +232,7 @@ public class LaptopManagerTest {
     public void assignSales() {
         Laptop retrieved1 = lm.findLaptopById(1);
         Laptop retrieved2 = lm.findLaptopById(2);
-        assertEquals(0, retrieved1.getSales().size());
+        assertEquals(1, retrieved1.getSales().size());
         assertEquals(2, retrieved2.getSales().size());
     }
 
