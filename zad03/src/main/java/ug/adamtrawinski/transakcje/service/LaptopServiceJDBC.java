@@ -240,7 +240,7 @@ public class LaptopServiceJDBC implements LaptopService {
         try {
             selectLaptopPriceBetweenPStmt.setDouble(1, min);
             selectLaptopPriceBetweenPStmt.setDouble(2, max);
-            ResultSet rs = selectLaptopNewerThanPStmt.executeQuery();
+            ResultSet rs = selectLaptopPriceBetweenPStmt.executeQuery();
             while (rs.next()) {
                 Laptop laptop = new Laptop(rs.getLong("id"),
                         rs.getString("name"),

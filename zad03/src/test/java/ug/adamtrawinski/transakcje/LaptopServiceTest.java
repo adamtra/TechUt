@@ -85,7 +85,59 @@ public class LaptopServiceTest {
     public void addLaptop() {
         Laptop retrieved1 = ls.getLaptopById(0);
         Laptop retrieved2 = ls.getLaptopById(3);
+        Laptop retrieved3 = ls.getLaptopById(5);
         assertEquals(NAME_1, retrieved1.getName());
         assertEquals(NAME_4, retrieved2.getName());
+        assertEquals(NAME_6, retrieved3.getName());
+    }
+
+    @Test
+    public void deleteLaptop() {
+        ls.deleteLaptop(2);
+        Laptop retrieved = ls.getLaptopById(2);
+        assertNull(retrieved);
+    }
+
+    @Test
+    public void deleteLaptops() {
+        ls.deleteLaptops();
+        List<Laptop> laptops = ls.getAllLaptops();
+        assertEquals(0, laptops.size());
+    }
+
+    @Test
+    public void getLaptopByName() {
+        Laptop retrieved = ls.getLaptopByName(NAME_2);
+        assertEquals(NAME_2, retrieved.getName());
+    }
+
+    @Test
+    public void getAllLaptops() {
+        List<Laptop> laptops = ls.getAllLaptops();
+        assertEquals(5, laptops.size());
+    }
+
+    @Test
+    public void getUsedLaptops() {
+        List<Laptop> laptops = ls.getUsedLaptops();
+        assertEquals(3, laptops.size());
+    }
+
+    @Test
+    public void getLaptopsNewerThan() {
+        List<Laptop> laptops = ls.getLaptopsNewerThan(new Date((2017 - 1900), 1, 1));
+        assertEquals(4, laptops.size());
+    }
+
+    @Test
+    public void getLaptopsPriceBetween() {
+        List<Laptop> laptops = ls.getLaptopsPriceBetween(250, 340);
+        assertEquals(2, laptops.size());
+    }
+
+    @Test
+    public void getLaptopsNameLike() {
+        List<Laptop> laptops = ls.getLaptopsNameLike("lE");
+        assertEquals(2, laptops.size());
     }
 }
