@@ -197,11 +197,13 @@ public class LaptopServiceJDBC implements LaptopService {
                 addLaptopLowLevel(laptop);
             }
             connection.commit();
+            connection.setAutoCommit(true);
             return true;
         }
         catch (SQLException e) {
             System.out.println("Wycofanie transakcji");
             try {
+                connection.setAutoCommit(true);
                 connection.rollback();
             }
             catch (SQLException e1) {
