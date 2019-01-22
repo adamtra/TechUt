@@ -23,6 +23,9 @@ public class LaptopServiceJDBC implements LaptopService {
     private final String SELECT_LAPTOP_NEWER_THAN = "SELECT id, name, used, releasedate, price FROM Laptop WHERE releasedate > ?";
     private final String SELECT_LAPTOP_PRICE_BETWEEN = "SELECT id, name, used, releasedate, price FROM Laptop WHERE price >= ? AND price <= ?";
     private final String SELECT_LAPTOP_NAME_LIKE = "SELECT id, name, used, releasedate, price FROM Laptop WHERE LCASE(name) LIKE LCASE(CONCAT('%', ?, '%'))";
+    private final String CLEAR_TABLE = "TRUNCATE TABLE LAPTOP RESTART IDENTITY";
+    private final String SELECT_LAPTOP_BY_ID = "SELECT id, name, used, releasedate, price FROM Laptop WHERE id = ?";
+
 
 
     PreparedStatement insertLaptopPStmt;
@@ -34,35 +37,44 @@ public class LaptopServiceJDBC implements LaptopService {
     PreparedStatement selectLaptopNewerThanPStmt;
     PreparedStatement selectLaptopPriceBetweenPStmt;
     PreparedStatement selectLaptopNameLikePStmt;
+    PreparedStatement clearTablePStmt;
+    PreparedStatement selectLaptopByIdPStmt;
 
     private Statement statement;
 
-    public LaptopServiceJDBC() throws SQLException {
-        connection = DriverManager.getConnection(URL);
-        statement = connection.createStatement();
+    public LaptopServiceJDBC() {
+        try {
+            connection = DriverManager.getConnection(URL);
+            statement = connection.createStatement();
 
-        ResultSet rs = connection.getMetaData().getTables(null, null, null, null);
-        boolean tableExists = false;
-        while (rs.next()) {
-            if ("Laptop".equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
-                tableExists = true;
-                break;
+            ResultSet rs = connection.getMetaData().getTables(null, null, null, null);
+            boolean tableExists = false;
+            while (rs.next()) {
+                if ("Laptop".equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
+                    tableExists = true;
+                    break;
+                }
             }
-        }
 
-        if (!tableExists) {
-            statement.executeUpdate(createTableLaptop);
-        }
+            if (!tableExists) {
+                statement.executeUpdate(createTableLaptop);
+            }
 
-        insertLaptopPStmt = connection.prepareStatement(ADD_LAPTOP);
-        deleteLaptopPStmt = connection.prepareStatement(DELETE_LAPTOP);
-        deleteLaptopsPStmt = connection.prepareStatement(DELETE_LAPTOPS);
-        selectLaptopsPStmt = connection.prepareStatement(SELECT_LAPTOPS);
-        selectLaptopByNamePStmt = connection.prepareStatement(SELECT_LAPTOP_BY_NAME);
-        selectLaptopUsedPStmt = connection.prepareStatement(SELECT_LAPTOP_USED);
-        selectLaptopNewerThanPStmt = connection.prepareStatement(SELECT_LAPTOP_NEWER_THAN);
-        selectLaptopPriceBetweenPStmt = connection.prepareStatement(SELECT_LAPTOP_PRICE_BETWEEN);
-        selectLaptopNameLikePStmt = connection.prepareStatement(SELECT_LAPTOP_NAME_LIKE);
+            insertLaptopPStmt = connection.prepareStatement(ADD_LAPTOP);
+            deleteLaptopPStmt = connection.prepareStatement(DELETE_LAPTOP);
+            deleteLaptopsPStmt = connection.prepareStatement(DELETE_LAPTOPS);
+            selectLaptopsPStmt = connection.prepareStatement(SELECT_LAPTOPS);
+            selectLaptopByNamePStmt = connection.prepareStatement(SELECT_LAPTOP_BY_NAME);
+            selectLaptopUsedPStmt = connection.prepareStatement(SELECT_LAPTOP_USED);
+            selectLaptopNewerThanPStmt = connection.prepareStatement(SELECT_LAPTOP_NEWER_THAN);
+            selectLaptopPriceBetweenPStmt = connection.prepareStatement(SELECT_LAPTOP_PRICE_BETWEEN);
+            selectLaptopNameLikePStmt = connection.prepareStatement(SELECT_LAPTOP_NAME_LIKE);
+            clearTablePStmt = connection.prepareStatement(CLEAR_TABLE);
+            selectLaptopByIdPStmt = connection.prepareStatement(SELECT_LAPTOP_BY_ID);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private int addLaptopLowLevel(Laptop laptop) throws SQLException {
@@ -257,6 +269,36 @@ public class LaptopServiceJDBC implements LaptopService {
                         rs.getDate("releasedate"),
                         rs.getDouble("price"));
                 result.add(laptop);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public void clearTable() {
+        try {
+            clearTablePStmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Laptop getLaptopById(long id) {
+        Laptop result = null;
+        try {
+            selectLaptopByIdPStmt.setLong(1, id);
+            ResultSet rs = selectLaptopByIdPStmt.executeQuery();
+            if(rs.next()) {
+                result = new Laptop(rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getBoolean("used"),
+                        rs.getDate("releasedate"),
+                        rs.getDouble("price"));
             }
         }
         catch (SQLException e) {

@@ -5,13 +5,12 @@ import ug.adamtrawinski.transakcje.domain.Laptop;
 import ug.adamtrawinski.transakcje.service.LaptopService;
 import ug.adamtrawinski.transakcje.service.LaptopServiceJDBC;
 
-import java.sql.SQLException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Run {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
 
         Laptop laptop1 = new Laptop("Lenovo", false, new Date((2018 - 1900), 1, 2), 123.33);
         Laptop laptop2 = new Laptop("HP", false, new Date((2018 - 1900), 2, 5), 333.33);
